@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>Jogos do Brasil - Onde Assistir</title>
+<link rel="icon" type="image/png" href="favicon.png">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:Arial,sans-serif;background:#0a4d2e;color:#fff;padding:10px}
@@ -114,25 +115,25 @@ const jogos = [
 function renderizarJogos(){
   const container = document.getElementById('listaJogos');
   container.innerHTML = '';
-  
+
   if(jogos.length === 0){
     container.innerHTML = '<div class="sem-jogo">Nenhum jogo agendado no momento</div>';
     return;
   }
-  
+
   const hoje = new Date().toISOString().split('T')[0];
-  
+
   jogos.forEach(jogo => {
     const dataJogo = new Date(jogo.data + 'T' + jogo.hora);
     const dataFormatada = dataJogo.toLocaleDateString('pt-BR', {day: '2-digit', month: 'long'});
     const ehHoje = jogo.data === hoje;
-    
+
     let botoesHTML = '';
     if(jogo.canais.globo) botoesHTML += `<a href="${jogo.canais.globo}" target="_blank" class="btn btn-globo">Globo</a>`;
     if(jogo.canais.sportv) botoesHTML += `<a href="${jogo.canais.sportv}" target="_blank" class="btn btn-sportv">SporTV</a>`;
     if(jogo.canais.caze) botoesHTML += `<a href="${jogo.canais.caze}" target="_blank" class="btn btn-caze">CazéTV</a>`;
     if(jogo.canais.placar) botoesHTML += `<a href="${jogo.canais.placar}" target="_blank" class="btn btn-placar">Placar Ao Vivo</a>`;
-    
+
     const html = `
       <div class="jogo ${jogo.aoVivo || ehHoje? 'ao-vivo' : ''}">
         <div class="jogo-data">
