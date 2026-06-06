@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Jogos do Brasil - Onde Assistir</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#0a4d2e;color:#fff;padding:10px}
+.header{text-align:center;padding:15px 0;background:#ffdf00;color:#009c3b;border-radius:10px;margin-bottom:15px}
+.header h1{font-size:24px;margin-bottom:5px}
+.header p{font-size:14px;opacity:0.9}
+.jogo{background:#1a5c38;border-radius:12px;padding:15px;margin-bottom:15px;border:2px solid #ffdf00}
+.jogo-data{font-size:12px;color:#ffdf00;margin-bottom:8px}
+.jogo-times{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.time{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1}
+.time img{width:50px;height:50px;border-radius:50%;background:#fff;padding:5px}
+.time-nome{font-size:14px;font-weight:bold}
+.vs{font-size:20px;font-weight:bold;color:#ffdf00}
+.jogo-info{font-size:13px;text-align:center;margin-bottom:12px;opacity:0.9}
+.botoes{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn{padding:12px;border:none;border-radius:8px;font-size:14px;font-weight:bold;cursor:pointer;text-decoration:none;text-align:center;display:block}
+.btn-globo{background:#0066cc;color:#fff}
+.btn-sportv{background:#e30613;color:#fff}
+.btn-caze{background:#ff0000;color:#fff}
+.btn-paramount{background:#0064ff;color:#fff}
+.btn-placar{background:#ffdf00;color:#009c3b}
+.ao-vivo{animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.7}}
+.sem-jogo{text-align:center;padding:40px 20px;opacity:0.7}
+.footer{text-align:center;font-size:11px;opacity:0.6;margin-top:20px}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>🇧🇷 JOGOS DO BRASIL</h1>
+  <p>Onde assistir ao vivo</p>
+</div>
+
+<div id="listaJogos"></div>
+
+<div class="footer">
+  Atualizado em: <span id="dataAtual"></span><br>
+  Site apenas redireciona para canais oficiais
+</div>
+
+<script>
+// EDITA AQUI OS PRÓXIMOS JOGOS DO BRASIL
+const jogos = [
+  {
+    data: "2026-06-10",
+    hora: "21:30",
+    timeCasa: "Brasil",
+    escudoCasa: "https://cdn-icons-png.flaticon.com/512/197/197386.png",
+    timeFora: "Argentina",
+    escudoFora: "https://cdn-icons-png.flaticon.com/512/197/197573.png",
+    campeonato: "Eliminatórias da Copa",
+    aoVivo: false,
+    canais: {
+      globo: "https://globoplay.globo.com/",
+      sportv: "https://sportv.globo.com/",
+      caze: "https://www.youtube.com/@CazeTV",
+      placar: "https://www.google.com/search?q=brasil+x+argentina+placar"
+    }
+  },
+  {
+    data: "2026-06-15",
+    hora: "16:00",
+    timeCasa: "Brasil",
+    escudoCasa: "https://cdn-icons-png.flaticon.com/512/197/197386.png",
+    timeFora: "Uruguai",
+    escudoFora: "https://cdn-icons-png.flaticon.com/512/197/197599.png",
+    campeonato: "Amistoso",
+    aoVivo: false,
+    canais: {
+      globo: "https://globoplay.globo.com/",
+      sportv: "https://sportv.globo.com/",
+      placar: "https://www.google.com/search?q=brasil+x+uruguai+placar"
+    }
+  }
+];
+
+function renderizarJogos(){
+  const container = document.getElementById('listaJogos');
+  container.innerHTML = '';
+  
+  if(jogos.length === 0){
+    container.innerHTML = '<div class="sem-jogo">Nenhum jogo agendado no momento</div>';
+    return;
+  }
+  
+  jogos.forEach(jogo => {
+    const dataJogo = new Date(jogo.data + 'T' + jogo.hora);
+    const dataFormatada = dataJogo.toLocaleDateString('pt-BR', {day: '2-digit', month: 'long'});
+    
+    let botoesHTML = '';
+    if(jogo.canais.globo) botoesHTML += `<a href="${jogo.canais.globo}" target="_blank" class="btn btn-globo">Globo</a>`;
+    if(jogo.canais.sportv) botoesHTML += `<a href="${jogo.canais.sportv}" target="_blank" class="btn btn-sportv">SporTV</a>`;
+    if(jogo.canais.caze) botoesHTML += `<a href="${jogo.canais.caze}" target="_blank" class="btn btn-caze">CazéTV</a>`;
+    if(jogo.canais.paramount) botoesHTML += `<a href="${jogo.canais.paramount}" target="_blank" class="btn btn-paramount">Paramount+</a>`;
+    if(jogo.canais.placar) botoesHTML += `<a href="${jogo.canais.placar}" target="_blank" class="btn btn-placar">Placar Ao Vivo</a>`;
+    
+    const html = `
+      <div class="jogo ${jogo.aoVivo ? 'ao-vivo' : ''}">
+        <div class="jogo-data">${jogo.aoVivo ? '🔴 AO VIVO - ' : ''}${dataFormatada} às ${jogo.hora}</div>
+        <div class="jogo-times">
+          <div class="time">
+            <img src="${jogo.escudoCasa}" alt="${jogo.timeCasa}">
+            <div class="time-nome">${jogo.timeCasa}</div>
+          </div>
+          <div class="vs">X</div>
+          <div class="time">
+            <img src="${jogo.escudoFora}" alt="${jogo.timeFora}">
+            <div class="time-nome">${jogo.timeFora}</div>
+          </div>
+        </div>
+        <div class="jogo-info">${jogo.campeonato}</div>
+        <div class="botoes">${botoesHTML}</div>
+      </div>
+    `;
+    container.innerHTML += html;
+  });
+}
+
+document.getElementById('dataAtual').innerText = new Date().toLocaleDateString('pt-BR');
+renderizarJogos();
+</script>
+</body>
+</html>
