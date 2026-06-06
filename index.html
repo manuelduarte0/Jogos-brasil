@@ -23,12 +23,12 @@ body{font-family:Arial,sans-serif;background:#0a4d2e;color:#fff;padding:10px}
 .btn-globo{background:#0066cc;color:#fff}
 .btn-sportv{background:#e30613;color:#fff}
 .btn-caze{background:#ff0000;color:#fff}
-.btn-paramount{background:#0064ff;color:#fff}
 .btn-placar{background:#ffdf00;color:#009c3b}
-.ao-vivo{animation:pulse 2s infinite}
+.ao-vivo{animation:pulse 2s infinite;border-color:#ff0000}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.7}}
 .sem-jogo{text-align:center;padding:40px 20px;opacity:0.7}
 .footer{text-align:center;font-size:11px;opacity:0.6;margin-top:20px}
+.hoje{background:#ff0000;color:#fff;padding:3px 8px;border-radius:5px;font-size:11px;margin-left:5px}
 </style>
 </head>
 <body>
@@ -45,37 +45,68 @@ body{font-family:Arial,sans-serif;background:#0a4d2e;color:#fff;padding:10px}
 </div>
 
 <script>
-// EDITA AQUI OS PRÓXIMOS JOGOS DO BRASIL
+// JOGOS ATUALIZADOS JUNHO 2026 - COPA DO MUNDO
 const jogos = [
   {
-    data: "2026-06-10",
-    hora: "21:30",
+    data: "2026-06-06",
+    hora: "19:00",
     timeCasa: "Brasil",
     escudoCasa: "https://cdn-icons-png.flaticon.com/512/197/197386.png",
-    timeFora: "Argentina",
-    escudoFora: "https://cdn-icons-png.flaticon.com/512/197/197573.png",
-    campeonato: "Eliminatórias da Copa",
+    timeFora: "Egito",
+    escudoFora: "https://cdn-icons-png.flaticon.com/512/197/197558.png",
+    campeonato: "Amistoso Internacional - Cleveland, EUA",
+    aoVivo: true,
+    canais: {
+      globo: "https://globoplay.globo.com/",
+      sportv: "https://sportv.globo.com/",
+      caze: "https://www.youtube.com/@CazeTV",
+      placar: "https://www.google.com/search?q=brasil+x+egito+ao+vivo"
+    }
+  },
+  {
+    data: "2026-06-13",
+    hora: "19:00",
+    timeCasa: "Brasil",
+    escudoCasa: "https://cdn-icons-png.flaticon.com/512/197/197386.png",
+    timeFora: "Marrocos",
+    escudoFora: "https://cdn-icons-png.flaticon.com/512/197/197551.png",
+    campeonato: "Copa do Mundo - 1ª Rodada - Nova Jersey",
     aoVivo: false,
     canais: {
       globo: "https://globoplay.globo.com/",
       sportv: "https://sportv.globo.com/",
       caze: "https://www.youtube.com/@CazeTV",
-      placar: "https://www.google.com/search?q=brasil+x+argentina+placar"
+      placar: "https://www.google.com/search?q=brasil+x+marrocos+copa+do+mundo"
     }
   },
   {
-    data: "2026-06-15",
-    hora: "16:00",
+    data: "2026-06-19",
+    hora: "22:00",
     timeCasa: "Brasil",
     escudoCasa: "https://cdn-icons-png.flaticon.com/512/197/197386.png",
-    timeFora: "Uruguai",
-    escudoFora: "https://cdn-icons-png.flaticon.com/512/197/197599.png",
-    campeonato: "Amistoso",
+    timeFora: "Haiti",
+    escudoFora: "https://cdn-icons-png.flaticon.com/512/197/197586.png",
+    campeonato: "Copa do Mundo - 2ª Rodada - Philadelphia",
     aoVivo: false,
     canais: {
       globo: "https://globoplay.globo.com/",
       sportv: "https://sportv.globo.com/",
-      placar: "https://www.google.com/search?q=brasil+x+uruguai+placar"
+      placar: "https://www.google.com/search?q=brasil+x+haiti+copa+do+mundo"
+    }
+  },
+  {
+    data: "2026-06-24",
+    hora: "19:00",
+    timeCasa: "Escócia",
+    escudoCasa: "https://cdn-icons-png.flaticon.com/512/197/197594.png",
+    timeFora: "Brasil",
+    escudoFora: "https://cdn-icons-png.flaticon.com/512/197/197386.png",
+    campeonato: "Copa do Mundo - 3ª Rodada - Miami",
+    aoVivo: false,
+    canais: {
+      globo: "https://globoplay.globo.com/",
+      sportv: "https://sportv.globo.com/",
+      placar: "https://www.google.com/search?q=escocia+x+brasil+copa+do+mundo"
     }
   }
 ];
@@ -89,20 +120,24 @@ function renderizarJogos(){
     return;
   }
   
+  const hoje = new Date().toISOString().split('T')[0];
+  
   jogos.forEach(jogo => {
     const dataJogo = new Date(jogo.data + 'T' + jogo.hora);
     const dataFormatada = dataJogo.toLocaleDateString('pt-BR', {day: '2-digit', month: 'long'});
+    const ehHoje = jogo.data === hoje;
     
     let botoesHTML = '';
     if(jogo.canais.globo) botoesHTML += `<a href="${jogo.canais.globo}" target="_blank" class="btn btn-globo">Globo</a>`;
     if(jogo.canais.sportv) botoesHTML += `<a href="${jogo.canais.sportv}" target="_blank" class="btn btn-sportv">SporTV</a>`;
     if(jogo.canais.caze) botoesHTML += `<a href="${jogo.canais.caze}" target="_blank" class="btn btn-caze">CazéTV</a>`;
-    if(jogo.canais.paramount) botoesHTML += `<a href="${jogo.canais.paramount}" target="_blank" class="btn btn-paramount">Paramount+</a>`;
     if(jogo.canais.placar) botoesHTML += `<a href="${jogo.canais.placar}" target="_blank" class="btn btn-placar">Placar Ao Vivo</a>`;
     
     const html = `
-      <div class="jogo ${jogo.aoVivo ? 'ao-vivo' : ''}">
-        <div class="jogo-data">${jogo.aoVivo ? '🔴 AO VIVO - ' : ''}${dataFormatada} às ${jogo.hora}</div>
+      <div class="jogo ${jogo.aoVivo || ehHoje? 'ao-vivo' : ''}">
+        <div class="jogo-data">
+          ${jogo.aoVivo? '🔴 AO VIVO' : ''} ${ehHoje? '<span class="hoje">HOJE</span>' : ''} ${dataFormatada} às ${jogo.hora}
+        </div>
         <div class="jogo-times">
           <div class="time">
             <img src="${jogo.escudoCasa}" alt="${jogo.timeCasa}">
